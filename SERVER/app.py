@@ -1,6 +1,12 @@
 from flask import Flask
+from flask_cors  import CORS
 from db import db
+from visitor_log import visitor_blueprint
+
+
+
 app=Flask(__name__)
+CORS(app)
 
 #Database Configuration
 username="root"
@@ -14,10 +20,18 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=True
 
 db.init_app(app)
 
+#Regsiter Blueprints
+app.register_blueprint(visitor_blueprint)   
+
+
+
+
+
 #API End point - Route
 @app.route('/')
 def hello():
-    return '    Hello World!'
+    return 'Hello World'
+
 
 
 if __name__ =='__main__':

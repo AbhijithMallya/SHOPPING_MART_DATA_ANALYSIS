@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Walmart Visitor Log</title>
   </head>
-  <body style="background-color: rgb(215, 236, 250);">
+  <body style="background-color: rgb(215, 236, 250)">
     <div class="Container" style="margin-top: 70px">
       <div class="row">
         <div class="col-2"></div>
@@ -75,7 +75,7 @@
       <!-- 2nd section Image and form End -->
       <hr />
     </div>
-    <script>  
+    <script>
       function validateForm() {
         // fetch value from gender select
         var gender = document.getElementById("gender").value;
@@ -89,17 +89,29 @@
 
         //fetch value from age group
         var ageGroup = document.getElementById("ageGroup").value;
-        if(ageGroup=="")
-        {
-          document.getElementById("errAgeGroup").innerHTML = "Please select the age group";
+        if (ageGroup == "") {
+          document.getElementById("errAgeGroup").innerHTML =
+            "Please select the age group";
           return false;
+        } else {
+          document.getElementById("errAgeGroup").innerHTML = "";
+          alert("SUBMITTED SUCCESSFULLY");
+        }
+        //AJAX for sending data to server(START)
+        var xhttpVisitors = new XMLHttpRequest();
+        xhttpVisitors.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            console.log(this.responseText);
+          }
+        };
 
-        }
-        else
-        {
-          document.getElementById("errAgeGroup").innerHTML="";
-          alert("SUBMITTED SUCCESSFULLY")
-        }
+        //API endPoint
+        xhttpVisitors.open('POST','http://127.0.0.1:5000/log-visitors',true);
+        xhttpVisitors.setRequestHeader("Content-type","application/x-www-form-urlencoded")
+        xhttpVisitors.send("gender=" + gender + "&age-group=" + ageGroup);
+
+
+        //AJAX for sending data to server(END)
       }
     </script>
   </body>
