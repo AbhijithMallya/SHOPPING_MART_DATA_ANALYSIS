@@ -68,6 +68,7 @@
           >
             SUBMIT
           </button>
+          <span id="successMsg" style="color: green;"></span>
           <hr />
         </div>
       </div>
@@ -95,12 +96,13 @@
           return false;
         } else {
           document.getElementById("errAgeGroup").innerHTML = "";
-          alert("SUBMITTED SUCCESSFULLY");
+          //alert("SUBMITTED SUCCESSFULLY");
         }
         //AJAX for sending data to server(START)
         var xhttpVisitors = new XMLHttpRequest();
         xhttpVisitors.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("successMsg").innerHTML =this.responseText
             console.log(this.responseText);
           }
         };

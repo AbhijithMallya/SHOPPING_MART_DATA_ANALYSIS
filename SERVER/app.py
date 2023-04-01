@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors  import CORS
 from db import db
 from visitor_log import visitor_blueprint
+from dashboard import dashboard_blueprint
 
 
 
