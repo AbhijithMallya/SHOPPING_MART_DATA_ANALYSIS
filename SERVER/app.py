@@ -23,9 +23,7 @@ db.init_app(app)
 
 #Regsiter Blueprints
 app.register_blueprint(visitor_blueprint)   
-
-
-
+app.register_blueprint(dashboard_blueprint)
 
 
 #API End point - Route
