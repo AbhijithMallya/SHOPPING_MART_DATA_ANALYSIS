@@ -13,7 +13,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
-  <body>
+  <body style="background-color: rgb(215, 236, 250)">
     <div class="container">
       <div class="row" style="margin-top: 30px">
         <div class="col-6">
@@ -38,52 +38,66 @@
       <div class="row">
         <div class="col-3">
           <!-- card view with color start -->
-          <div class="card" style="background-color: bisque">
+          <!-- <div class="shadow p-3 mb-5 bg-white rounded"> -->
+          <div
+            class="card shadow p-2 mb-3 rounded"
+            style="background-color: bisque"
+          >
             <div class="card-body">
               <h4 class="card-title"><u>Today's Visitors</u></h4>
-              <h5 class="card-text">100</h5>
+              <h5 class="card-text"><span id="today-visitors"></span></h5>
             </div>
           </div>
+          <!-- </div> -->
           <!-- card view with coloer End -->
         </div>
         <div class="col-3">
           <!-- card view with color start -->
-          <div class="card" style="background-color: rgb(196, 242, 255)">
+          <div
+            class="card shadow p-2 mb-3 rounded"
+            style="background-color: rgb(196, 242, 255)"
+          >
             <div class="card-body">
               <h4 class="card-title"><u>Overall Visitors</u></h4>
-              <h5 class="card-text">100</h5>
+              <h5 class="card-text"><span id="overall-visitors"></span></h5>
             </div>
           </div>
           <!-- card view with coloer End -->
         </div>
         <div class="col-3">
           <!-- card view with color start -->
-          <div class="card" style="background-color: rgb(196, 255, 208)">
+          <div
+            class="card shadow p-2 mb-3 rounded"
+            style="background-color: rgb(196, 255, 208)"
+          >
             <div class="card-body">
               <h4 class="card-title"><u>Male Visitors</u></h4>
-              <h5 class="card-text">100</h5>
+              <h5 class="card-text"><span id="male-visitors"></span></h5>
             </div>
           </div>
           <!-- card view with coloer End -->
         </div>
         <div class="col-3">
           <!-- card view with color start -->
-          <div class="card" style="background-color: rgb(243, 196, 255)">
+          <div
+            class="card shadow p-2 mb-3 rounded"
+            style="background-color: rgb(243, 196, 255)"
+          >
             <div class="card-body">
               <h4 class="card-title"><u>Female Visitors</u></h4>
-              <h5 class="card-text">100</h5>
+              <h5 class="card-text"><span id="female-visitors"></span></h5>
             </div>
           </div>
           <!-- card view with coloer End -->
         </div>
       </div>
       <!-- Card View End -->
-      <br /><br />
+      <hr />
       <!-- Table and Graph start(6+6) -->
       <div class="row">
         <div class="col-6">
           <!-- table start -->
-          <table class="table">
+          <table class="table table-responsive table-striped">
             <thead>
               <tr class="table-dark">
                 <td>SL</td>
@@ -92,73 +106,13 @@
                 <td>Overall Visitors</td>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Male/Kid</td>
-                <td>3</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Female/Kid</td>
-                <td>5</td>
-                <td>50</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Male/Teenager</td>
-                <td>2</td>
-                <td>20</td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Female/Teenager</td>
-                <td>3</td>
-                <td>35</td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Male/Youngster</td>
-                <td>3</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Female/Youngster</td>
-                <td>3</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Male/Adult</td>
-                <td>3</td>
-                <td>35</td>
-              </tr>
-              <tr>
-                <td>8</td>
-                <td>Female/Adult</td>
-                <td>3</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>9</td>
-                <td>Male/Senior Citizen</td>
-                <td>3</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td>Female/Senior Citizen</td>
-                <td>3</td>
-                <td>30</td>
-              </tr>
-            </tbody>
+
+            <tbody id="table_data"></tbody>
           </table>
           <!-- table End -->
         </div>
         <!-- Graph start -->
-        <div class="col-6" style="margin-top: 110px;">
+        <div class="col-6" style="margin-top: 110px">
           <div>
             <canvas id="myChart"></canvas>
           </div>
@@ -168,33 +122,218 @@
 
       <!-- Table and Graph End -->
     </div>
+    <div class="row">
+      <button
+        type="button"
+        onclick="window.location.href='index.html';"
+        class="btn btn-success btn-lg btn-block"
+      >
+        Index
+      </button>
+    </div>
     <script>
-      const ctx = document.getElementById('myChart');
-    
+      
+
+      //AJAX Todays Visitors START
+      var xhttpTVisitors = new XMLHttpRequest();
+      xhttpTVisitors.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var jsonData = JSON.parse(this.responseText);
+          var todayVisitorCount = jsonData[0].today_visitors;
+          document.getElementById("today-visitors").innerHTML =
+            todayVisitorCount;
+          console.log(this.responseText);
+        }
+      };
+
+      //API endPoint
+      xhttpTVisitors.open("GET", "http://127.0.0.1:5000/today-visitors", true);
+      xhttpTVisitors.send();
+
+      //AJAX Todays Visitors END
+
+      //AJAX Overall Visitors START
+      var xhttpOverallVisitors = new XMLHttpRequest();
+      xhttpOverallVisitors.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var jsonData = JSON.parse(this.responseText);
+          var todayVisitorCount = jsonData[0].overall_visitors;
+          document.getElementById("overall-visitors").innerHTML =
+            todayVisitorCount;
+          console.log(this.responseText);
+        }
+      };
+
+      //API endPoint
+      xhttpOverallVisitors.open(
+        "GET",
+        "http://127.0.0.1:5000/overall-visitors",
+        true
+      );
+      xhttpOverallVisitors.send();
+
+      //AJAX Overall Visitors END
+
+      //AJAX MALE START
+      var xhttpMaleVisitors = new XMLHttpRequest();
+      xhttpMaleVisitors.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var jsonData = JSON.parse(this.responseText);
+          var todayVisitorCount = jsonData[0].male_visitors;
+          document.getElementById("male-visitors").innerHTML =
+            todayVisitorCount;
+          console.log(this.responseText);
+        }
+      };
+
+      //API endPoint
+      xhttpMaleVisitors.open(
+        "GET",
+        "http://127.0.0.1:5000/male-visitors",
+        true
+      );
+      xhttpMaleVisitors.send();
+
+      //AJAX Overall MALE END
+
+      //AJAX FEMALE START
+      var xhttpFemaleVisitors = new XMLHttpRequest();
+      xhttpFemaleVisitors.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var jsonData = JSON.parse(this.responseText);
+          var todayVisitorCount = jsonData[0].female_visitors;
+          document.getElementById("female-visitors").innerHTML =
+            todayVisitorCount;
+          console.log(this.responseText);
+        }
+      };
+
+      //API endPoint
+      xhttpFemaleVisitors.open(
+        "GET",
+        "http://127.0.0.1:5000/female-visitors",
+        true
+      );
+      xhttpFemaleVisitors.send();
+
+      //AJAX FEMALE END
+
+      // AJAX FOR TABLE DATA START
+      var xhttpTableDataVisitors = new XMLHttpRequest();
+      xhttpTableDataVisitors.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var jasonData = JSON.parse(this.responseText);
+          var jasonLength = jasonData.length
+          console.log("Jason length :: " + jasonLength);
+          var tableStructure = "";
+          var sl = 0;
+          console.log(this.responseText);
+
+          for (var i = 0; i < jasonLength; i++) {
+            sl++;
+            tableStructure += "<tr>";
+            tableStructure += "<td>" + sl + "</td>";
+            tableStructure += "<td>" +jasonData[i].gender +"/" +jasonData[i].age_group +"</td>";
+            tableStructure += "<td>" + jasonData[i].today_visitors + "</td>";
+            tableStructure += "<td>" + jasonData[i].overall_visitors + "</td>";
+            tableStructure += "</tr>";
+          }
+
+          // var todayVisitorCount = jsonData[0].female_visitors;
+          document.getElementById("table_data").innerHTML = tableStructure;
+        }
+      }; //API endPoint
+      xhttpTableDataVisitors.open(
+        "GET",
+        "http://127.0.0.1:5000/table-data",
+        true
+      );
+      xhttpTableDataVisitors.send();
+
+      // AJAX FOR TABLE DATA END
+ /*************************************************************************************************************************/
+      
+      // AJAX BAR GRAPH START
+      var xhttpGraphVisitors = new XMLHttpRequest();
+      xhttpGraphVisitors.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          var jasonData = JSON.parse(this.responseText);
+          var jasonLength = jasonData.length
+          var arr= []
+          for (var j=0;j<jasonLength;j++)
+          {
+              arr.push(jasonData[j].month)
+          }
+          console.log(arr)
+          //Pass the value to the graph
+          const ctx = document.getElementById("myChart");
+
       new Chart(ctx, {
-        type: 'bar',
+        type: "bar",
         data: {
-          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-          datasets: [{
-            label: '# of Visitors',
-            data: [1,2,3,4,5,6,7,6,5,4,3,2],
-            borderWidth: 1
-          }]
+          labels: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          datasets: [
+            {
+              label: "# of Visitors",
+              data: arr ,
+              borderWidth: 1,
+            },
+          ],
         },
         options: {
           scales: {
             y: {
-              beginAtZero: true
-            }
-          }
-        }
+              beginAtZero: true,
+            },
+          },
+        },
       });
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+          console.log(this.responseText);
+        }
+      };
+
+      //API endPoint
+      xhttpGraphVisitors.open(
+        "GET",
+        "http://127.0.0.1:5000/graph-data",
+        true
+      );
+      xhttpGraphVisitors.send();
+
+      // AJAX BAR GRAPH  END
+/********************************************************************************************************************/
     </script>
-     
   </body>
 </html>
-
-
 
 <!-- 
 * Server sends data in the form of API's

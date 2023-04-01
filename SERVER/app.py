@@ -26,6 +26,9 @@ app.register_blueprint(visitor_blueprint)
 app.register_blueprint(dashboard_blueprint)
 
 
+
+
+
 #API End point - Route
 @app.route('/')
 def hello():
