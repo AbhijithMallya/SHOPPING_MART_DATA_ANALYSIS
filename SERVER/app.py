@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask ,render_template
 from flask_cors  import CORS
 from db import db
 from visitor_log import visitor_blueprint
@@ -30,9 +30,10 @@ app.register_blueprint(dashboard_blueprint)
 
 
 #API End point - Route
+
 @app.route('/')
 def hello():
-    return 'Hello World'
+    return "Server Up. Hello world "
 
 
 
